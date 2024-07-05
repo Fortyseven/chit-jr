@@ -1,7 +1,6 @@
 export default {
-    name: "SD Prompter",
-    prompt: `
-    You will be provided with a fragment of text; either individual key words, or a brief description.
+    name: "🎨 SD Prompter",
+    prompt: `You will be provided with a fragment of text; either individual key words, or a brief description.
 
 You are to imagine a fuller, more visually descriptive prompt suitable for Stable Diffusion, based on this fragment. The response should be no more than two sentences.
 

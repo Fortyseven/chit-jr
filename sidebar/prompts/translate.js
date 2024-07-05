@@ -1,5 +1,5 @@
 export default {
-    name: "Translate to English",
+    name: "💬 Translate to English",
     prompt: `Translate the following text to English, respond using the following Markdown format:
 
 > $TRANSLATION
