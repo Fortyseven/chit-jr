@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Sidebar</title>
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+            integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="sidebarStyle.css">
+    </head>
+
+    <body>
+        <div class="options">
+            <!-- <fieldset>
+                <legend>Model</legend>
+                <select id="model">
+                    <option value="gemma2:latest">Gemma2 9B</option>
+                    <option value="llama3:latest">Llama3 8B</option>
+                </select>
+            </fieldset> -->
+            <select id="systemPrompt" class="">
+                <!-- <option value="summary">Summarize</option>
+                <option value="analyze">Analysis</option>
+                <option value="translate">Translate</option> -->
+            </select>
+            <button id="reload">Reload</button>
+        </div>
+
+        <textarea rows="1" id="copied_text"></textarea>
+        <div id="result"></div>
+
+        <script src="./vendor/markdown-it/dist/markdown-it.min.js"></script>
+        <script src="./prompts/index.js" type="module"></script>
+        <script src="sidebarScript.js"></script>
+    </body>
+
+</html>

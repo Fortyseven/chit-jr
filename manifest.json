@@ -1,0 +1,30 @@
+{
+    "name": "Chit Jr.",
+    "version": "1.0",
+    "manifest_version": 2,
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "scripting"
+    ],
+    "content_scripts": [
+        {
+            "matches": [
+                "<all_urls>"
+            ]
+        }
+    ],
+    "icons": {
+        "48": "favicon.png"
+    },
+    "background": {
+        "scripts": [
+            "background.js"
+        ],
+        "type": "module"
+    },
+    "sidebar_action": {
+        "default_panel": "sidebar/sidebar.html",
+        "default_title": "Chit Jr."
+    }
+}
