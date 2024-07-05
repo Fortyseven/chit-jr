@@ -67,11 +67,12 @@ function reloadQuery() {
 
 async function olGenerate() {
     // const prompt = buildPrompt(request_text);
+    const system = window.SYSTEM_PROMPTS[selectedSystem];
+
     const options = {
-        temperature: 0.2,
+        temperature: system.temperature || 0.2,
         num_ctx: 8192,
     };
-    const system = window.SYSTEM_PROMPTS[selectedSystem].prompt;
 
     try {
         const response = await fetch(`${OLLAMA_ENDPOINT}/api/generate`, {
@@ -79,7 +80,7 @@ async function olGenerate() {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 model: OLLAMA_MODEL,
-                system,
+                system: system.prompt,
                 prompt: request_text,
                 options,
                 stream: false,
