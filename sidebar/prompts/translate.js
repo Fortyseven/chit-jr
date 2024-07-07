@@ -7,8 +7,9 @@ export default {
 ## Original Text
 $ORIGINAL_TEXT
 
-## Notes (language, meaning, etc. where applicable)
+## Notes (language, pronunciation, meaning, etc. where applicable)
+- $PRONUNCIATION
 
-$NOTES
+- $NOTES
 `,
 };
