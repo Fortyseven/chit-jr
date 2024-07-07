@@ -1,6 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
 
+:root {
+    /* --color-working-1: #f00;
+    --color-working-2: #0f0;
+    --color-working-3: #00f;
+    --color-working-4: #ff0; */
+    --color-working-1: #333;
+    --color-working-2: #fb0;
+    --color-working-3: #333;
+    --color-working-4: #fb0;
+}
+
 html {
     height: 100%;
 }
@@ -49,24 +60,44 @@ body {
         color: white;
         font-size: 1.2em;
     }
+    border-radius: 10px;
+    min-height: 10%;
+    overflow: scroll;
+    margin-bottom: 0.5em;
 }
 
 @keyframes fade {
     0% {
-        opacity: 1;
+        border-top-color: var(--color-working-1);
+        border-right-color: var(--color-working-2);
+        border-bottom-color: var(--color-working-3);
+        border-left-color: var(--color-working-4);
     }
-    50% {
-        opacity: 0.5;
+    33% {
+        border-top-color: var(--color-working-4);
+        border-right-color: var(--color-working-1);
+        border-bottom-color: var(--color-working-2);
+        border-left-color: var(--color-working-3);
+    }
+    66% {
+        border-top-color: var(--color-working-3);
+        border-right-color: var(--color-working-4);
+        border-bottom-color: var(--color-working-1);
+        border-left-color: var(--color-working-2);
     }
     100% {
-        opacity: 1;
+        border-top-color: var(--color-working-2);
+        border-right-color: var(--color-working-3);
+        border-bottom-color: var(--color-working-4);
+        border-left-color: var(--color-working-1);
     }
 }
 
 #result.in-progress {
-    animation: fade 1s infinite;
+    animation: fade 2s infinite;
+    animation-timing-function: ease-in-out;
     user-select: none;
-    background-color: #310;
+    border: 3px double white;
 }
 
 #copied_text {
