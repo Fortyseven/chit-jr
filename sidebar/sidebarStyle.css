@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
+
 html {
     height: 100%;
 }
@@ -6,6 +9,11 @@ body {
     margin-bottom: 0.5em;
     height: 100%;
     background-color: #111213;
+    /* font-family: "Roboto Flex", "Roboto Condensed", sans-serif; */
+
+    font-family: "Roboto Flex", system-ui, "Segoe UI", Roboto, Helvetica, Arial,
+        sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14pt;
 }
 
 #result,
