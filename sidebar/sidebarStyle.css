@@ -39,6 +39,16 @@ body {
 
 #result {
     margin-top: 0.5em;
+    font-size: 1.1em;
+
+    blockquote {
+        border-left: 4px solid #ccc;
+        padding-left: 1em;
+        margin-left: 0;
+        display: block;
+        color: white;
+        font-size: 1.2em;
+    }
 }
 
 @keyframes fade {
@@ -68,6 +78,7 @@ body {
     overflow: unset;
     margin: unset;
     font-family: monospace;
+    color: white;
 }
 
 .options {
