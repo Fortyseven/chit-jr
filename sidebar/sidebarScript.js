@@ -20,6 +20,14 @@ window.onload = function () {
         option.text = window.SYSTEM_PROMPTS[key].name;
         select.appendChild(option);
     }
+
+    // bind changes to #copied_text to onCopiedTextUpdated
+    document.getElementById("copied_text").addEventListener("input", (e) => {
+        onCopiedTextUpdated(e.target.value);
+    });
+
+    // bind #reload to reloadQuery
+    document.getElementById("reload").addEventListener("click", reloadQuery);
 };
 
 // the front door
@@ -43,9 +51,6 @@ browser.runtime.onMessage.addListener(
         }
     }
 );
-
-// bind #reload to reloadQuery
-document.getElementById("reload").addEventListener("click", reloadQuery);
 
 function reloadQuery() {
     if (inProgress) {
@@ -108,4 +113,9 @@ function clearResponse() {
 function getSystemPromptId() {
     const select = document.getElementById("systemPrompt");
     return select.options[select.selectedIndex].value;
+}
+
+function onCopiedTextUpdated(text) {
+    console.log("onCopiedTextUpdated", text);
+    request_text = text;
 }
