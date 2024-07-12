@@ -10,6 +10,8 @@
     --color-working-2: #fb0;
     --color-working-3: #333;
     --color-working-4: #fb0;
+
+    --color-primary: #e58b00;
 }
 
 html {
@@ -118,6 +120,7 @@ body {
     justify-content: space-between;
     margin-bottom: 0.5em;
     margin-top: 0.5em;
+    font-size: 1em;
 
     button {
         flex: 0 0 auto;
@@ -130,7 +133,7 @@ body {
         flex: 1 1 auto;
         color: black;
         border: none;
-        background-color: #fb0;
+        background-color: var(--color-primary);
     }
 }
 
