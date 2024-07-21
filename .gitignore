@@ -2,6 +2,7 @@
 node_modules
 old-sidebar
 web-ext-artifacts
+firefox/sidebar
 *.zip
 *.xpi
 package-lock.json
