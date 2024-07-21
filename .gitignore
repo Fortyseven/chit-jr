@@ -1,1 +1,7 @@
 .vscode
+node_modules
+old-sidebar
+web-ext-artifacts
+*.zip
+*.xpi
+package-lock.json

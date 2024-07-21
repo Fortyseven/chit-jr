@@ -1,11 +1,14 @@
 {
     "name": "Chit Jr.",
     "version": "1.0",
+    "homepage_url": "https://network47.org/",
+    "author": "Fortyseven",
     "manifest_version": 2,
     "permissions": [
         "activeTab",
         "contextMenus",
-        "scripting"
+        "scripting",
+        "storage"
     ],
     "content_scripts": [
         {
@@ -24,7 +27,8 @@
         "type": "module"
     },
     "sidebar_action": {
-        "default_panel": "sidebar/sidebar.html",
-        "default_title": "Chit Jr."
+        "default_panel": "sidebar/index.html",
+        "default_title": "Chit Jr.",
+        "open_at_install": true
     }
 }
