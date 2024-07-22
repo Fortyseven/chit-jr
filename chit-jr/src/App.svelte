@@ -11,7 +11,7 @@
     import { onMount } from "svelte";
     import ChatStream from "./components/ChatStream/ChatStream.svelte";
     import SystemSelector from "./components/SystemSelector/SystemSelector.svelte";
-    import { runQuery } from "./api/api";
+    import { insertUserMessage, runQuery } from "./api/api";
 
     function switchSystemPrompt(system) {
         $chatState.system_prompt_id = system;
@@ -38,7 +38,11 @@
                             switchSystemPrompt(system);
                             $incomingQuery = text.trim();
                             $chatTimeline = [];
-                            runQuery();
+                            if (system !== "general") {
+                                await runQuery($incomingQuery);
+                            } else {
+                                insertUserMessage($incomingQuery);
+                            }
                         }
                     });
                 }

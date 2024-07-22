@@ -1,7 +1,21 @@
 <script>
-    import { pendingResponse, responseInProgress } from "../../api/api";
+    import ChatEntry from "./ChatEntry.svelte";
+
+    import {
+        pendingResponse,
+        responseInProgress,
+        runQuery,
+    } from "../../api/api";
     import { chatTimeline } from "../../stores/chatStatus";
     import MarkdownBlock from "../MarkdownBlock.svelte";
+
+    const MAX_USER_LEN = 128;
+
+    let chatEntry = "Explain that.";
+
+    async function onBtnSendChatEntry() {
+        await runQuery(chatEntry);
+    }
 </script>
 
 <section
@@ -12,7 +26,14 @@
         {#key i}
             <div class="p-2 select-text rounded-md {role} flex-auto chat-row">
                 {#if role === "user"}
-                    {content}
+                    {#if content.length > MAX_USER_LEN}
+                        {content.slice(0, MAX_USER_LEN)}
+                        {#if content.length > MAX_USER_LEN}
+                            ...
+                        {/if}
+                    {:else}
+                        {content}
+                    {/if}
                 {:else}
                     <MarkdownBlock {content} />
                 {/if}
@@ -28,14 +49,8 @@
         </div>
     {/if}
 
-    {#if $chatTimeline.length > 0}
-        <div class="my-4 pt-2">
-            <textarea
-                id="ChatEntry"
-                class="w-full rounded-md p-2 h-full border"
-                placeholder="Follow-up query..."
-            />
-        </div>
+    {#if !$responseInProgress}
+        <ChatEntry></ChatEntry>
     {/if}
 </section>
 
@@ -66,19 +81,5 @@
             rgba(0, 0, 0, 0.73)
         );
         border-bottom: 1px solid rgba(255, 255, 255, 0.067);
-    }
-
-    #ChatEntry {
-        /* background-color: #111; */
-        background-color: transparent;
-        color: var(--color-primary, #f0f);
-    }
-
-    #ChatEntry::placeholder {
-        opacity: 0.4;
-    }
-
-    #ChatEntry:focus {
-        /* outline: 1px solid #644; */
     }
 </style>

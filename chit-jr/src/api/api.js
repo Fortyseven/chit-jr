@@ -1,13 +1,9 @@
 import { get, writable, Writable } from "svelte/store";
 
-import {
-    chatState,
-    chatTimeline,
-    incomingQuery,
-    system_prompts,
-} from "../stores/chatStatus";
+import { chatState, chatTimeline, system_prompts } from "../stores/chatStatus";
 
 const OLLAMA_ENDPOINT = "http://localhost:11434";
+const DEFAULT_TEMP = 0.8;
 
 const responseInProgress_AbortController = writable(null);
 let errorMessage = writable(undefined);
@@ -44,7 +40,7 @@ function _clearPendingResponse() {
     });
 }
 
-/* ------------------------------------------------ */
+/* -------------------------------------------------------- */
 
 export const cancelInference = () => {
     const ac = get(responseInProgress_AbortController);
@@ -57,12 +53,10 @@ export const cancelInference = () => {
         responseInProgress.set(false);
         wasAborted.set(true);
         _clearPendingResponse();
-
-        // ebk_inputBoxBack();
     }
 };
 
-/* ------------------------------------------------ */
+/* -------------------------------------------------------- */
 
 // export const OL_listLocalModels = async () => {
 //     const response = await fetch(`${get(appState).apiEndpoint}/api/tags`);
@@ -78,6 +72,7 @@ export const cancelInference = () => {
 //     // console.log('Models: ', get(models));
 // };
 
+/* -------------------------------------------------------- */
 function _getChatParamObject() {
     const chat_parameters = get(chatState).values;
 
@@ -96,60 +91,32 @@ function _getChatParamObject() {
     return new_chat_parameters;
 }
 
-let local_chat_timeline = [];
+/* -------------------------------------------------------- */
+export function insertUserMessage(user_message) {
+    const msg_packet = {
+        role: "user",
+        content: user_message,
+    };
 
-/* ------------------------------------------------ */
-/* Returns null or the response from the server.    */
+    chatTimeline.update((timeline) => {
+        timeline.push(JSON.parse(JSON.stringify(msg_packet)));
+        return timeline;
+    });
+}
+
+/* -------------------------------------------------------- */
+/* Returns null or the response from the server.            */
 export async function OL_chat(
     user_message = null,
     continue_chat = false,
     pasted_image = undefined
 ) {
-    local_chat_timeline = [];
-
     if (get(chatState)?.model_name === null) {
         throw new Error("No model selected");
     }
 
-    //     if (continue_chat) {
-    //     // was last chat message's role an 'assistant' type?
-    //     const last_message_role =
-    //         get(chatTimeline)[get(chatTimeline).length - 1].role;
-
-    //     if (last_message_role === "assistant") {
-    //         should_continue_assistant_chat = true;
-    //         pendingContinuedAssistantChat.set(true);
-    //     } else {
-    //         // throw new Error(
-    //         //     "Can't continue chat: last message was not from assistant."
-    //         // );
-    //         // return;
-    //     }
-    // }
-
-    // if we don't have a message, it's for use when there's already
-    // a user message in the timeline, so skip adding it again
-    if (
-        user_message !== null
-        //&& !should_continue_assistant_chat
-    ) {
-        const msg_packet = {
-            role: "user",
-            content: user_message,
-            // images: [],
-        };
-
-        // if (pasted_image) {
-        //     let img64 = await convertBlobUrlToBase64(pasted_image);
-        //     msg_packet.images.push(img64);
-        // }
-
-        local_chat_timeline.push(JSON.parse(JSON.stringify(msg_packet)));
-
-        // chatTimeline.update((timeline) => {
-        //     timeline.push(JSON.parse(JSON.stringify(msg_packet)));
-        //     return timeline;
-        // });
+    if (user_message) {
+        insertUserMessage(user_message);
     }
 
     try {
@@ -160,21 +127,21 @@ export async function OL_chat(
         const body = {
             model: get(chatState).model_name,
             stream: true,
-            messages: [...local_chat_timeline],
-            //format: 'json',
+            messages: [...get(chatTimeline)],
             options: {
                 ..._getChatParamObject(),
-                // stop: ['[INST]', '[/INST]', '<<SYS>>', '<</SYS>>']
-                // TODO: let's get this into the preset manager
             },
         };
 
         const sys_prompt =
-            get(system_prompts)[get(chatState)?.system_prompt_id].prompt;
+            get(chatState)?.system_prompt_id === "general"
+                ? undefined
+                : get(system_prompts)[get(chatState)?.system_prompt_id].prompt;
 
         console.log("sys_prompt", sys_prompt);
 
         if (sys_prompt) {
+            // insert the system prompt at the beginning of the chat
             body.messages = [
                 {
                     role: "system",
@@ -182,6 +149,8 @@ export async function OL_chat(
                 },
                 ...body.messages,
             ];
+        } else {
+            body.options.temperature = DEFAULT_TEMP;
         }
 
         _clearPendingResponse();
@@ -226,12 +195,6 @@ export async function OL_chat(
 
         let pending = get(pendingResponse);
 
-        // if (get(chatState).values.num_predict > -1) {
-        //     // strip incomplete sentence from end of last message if we're restricting
-        //     // the number of tokens returned
-        //     pending.content = stripIncompleteSentence(pending.content);
-        // }
-
         return pending;
     } catch (err) {
         if (err?.name !== "AbortError") {
@@ -246,13 +209,13 @@ export async function OL_chat(
     }
 }
 
-export async function runQuery() {
-    if (get(incomingQuery) && get(chatState).system_prompt_id) {
+/* -------------------------------------------------------- */
+export async function runQuery(message = undefined) {
+    if (get(chatState).system_prompt_id) {
         try {
-            console.log("runQuery", get(incomingQuery));
-            const result = await OL_chat(get(incomingQuery));
+            const result = await OL_chat(message);
             console.log("RESULTS", result);
-            // return result;
+
             chatTimeline.update((timeline) => {
                 timeline.push(result);
                 return timeline;

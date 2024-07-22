@@ -18,7 +18,26 @@ chrome.runtime.onInstalled.addListener(function () {
         contexts: ["selection"],
     });
 
+    // adds general query entry to context menu
+    chrome.contextMenus.create({
+        id: `${MENU_ID}-general`,
+        contexts: ["selection"],
+        parentId: MENU_ID,
+        title: "❓ General Query",
+    });
+
+    // separator
+    chrome.contextMenus.create({
+        id: `${MENU_ID}-sep1`,
+        contexts: ["selection"],
+        parentId: MENU_ID,
+        type: "separator",
+        title: "xxx",
+    });
+
     for (const key in SYSTEM_PROMPTS) {
+        if (key === "general") continue;
+
         const system = SYSTEM_PROMPTS[key];
         chrome.contextMenus.create({
             id: `${MENU_ID}-${key}`,
