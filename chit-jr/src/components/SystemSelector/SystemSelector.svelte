@@ -16,7 +16,7 @@
     import CloseLarge from "carbon-icons-svelte/lib/CloseLarge.svelte";
     import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
     import { refreshChatResponse } from "../../lib/chat_functions";
-    import { Erase } from "carbon-icons-svelte";
+    import { Erase, MachineLearning } from "carbon-icons-svelte";
 
     function onBtnClear() {
         $incomingQuery = "";
@@ -51,6 +51,18 @@
             </div>
         {/if}
         <div class="flex flex-grow place-content-end gap-2">
+            {#if $chatState.system_prompt_id !== "general" && $chatTimeline.length > 0 && $chatTimeline[0].role === "user"}
+                <button
+                    id="btnClear"
+                    on:click={() => {
+                        $chatTimeline = [...$chatTimeline.slice(0, 1)];
+                        refreshChatResponse();
+                    }}
+                >
+                    <MachineLearning />
+                    Run
+                </button>
+            {/if}
             <button
                 id="btnClear"
                 on:click={onBtnClear}
