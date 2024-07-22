@@ -1,5 +1,5 @@
 export default {
-    name: "🤡 Retort",
+    name: "🔥 Roast",
     prompt: `Please compose a scathing retort to the provided block of text.
 
 Compose a concise and pointed response that highlights the flaws, inaccuracies, or logical fallacies in the original argument.
