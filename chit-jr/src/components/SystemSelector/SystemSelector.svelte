@@ -10,17 +10,31 @@
         incomingQuery,
         system_prompts,
     } from "../../stores/chatStatus";
-    import { runQuery } from "../../api/api";
+    import { responseInProgress, runQuery } from "../../api/api";
 
     import Recycle from "carbon-icons-svelte/lib/Recycle.svelte";
     import CloseLarge from "carbon-icons-svelte/lib/CloseLarge.svelte";
     import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
     import { refreshChatResponse } from "../../lib/chat_functions";
-    import { Erase, MachineLearning } from "carbon-icons-svelte";
+    import { Copy, Erase, MachineLearning } from "carbon-icons-svelte";
 
     function onBtnClear() {
         $incomingQuery = "";
         $chatTimeline = [];
+    }
+
+    function copyChatToClipboard() {
+        const chatText = $chatTimeline
+            .map(({ role, content }) => {
+                if (role === "user") {
+                    return "> " + content;
+                } else {
+                    return content.replace(/<[^>]*>?/gm, "");
+                }
+            })
+            .join("\n\n---------------------------\n\n");
+
+        navigator.clipboard.writeText(chatText);
     }
 </script>
 
@@ -51,20 +65,32 @@
             </div>
         {/if}
         <div class="flex flex-grow place-content-end gap-2">
-            {#if $chatState.system_prompt_id !== "general" && $chatTimeline.length > 0 && $chatTimeline[0].role === "user"}
-                <button
-                    id="btnClear"
-                    on:click={() => {
-                        $chatTimeline = [...$chatTimeline.slice(0, 1)];
-                        refreshChatResponse();
-                    }}
-                >
-                    <MachineLearning />
-                    Run
-                </button>
+            {#if !$responseInProgress}
+                {#if $chatState.system_prompt_id !== "general" && $chatTimeline.length > 0 && $chatTimeline[0].role === "user"}
+                    <button
+                        id="btnClear"
+                        on:click={() => {
+                            $chatTimeline = [...$chatTimeline.slice(0, 1)];
+                            refreshChatResponse();
+                        }}
+                    >
+                        <MachineLearning />
+                        Run
+                    </button>
+                {/if}
+                {#if $chatTimeline.length > 0}
+                    <button
+                        id="btnClear"
+                        on:click={copyChatToClipboard}
+                    >
+                        <Copy />
+                        Copy
+                    </button>
+                {/if}
             {/if}
             <button
                 id="btnClear"
+                disabled={$responseInProgress}
                 on:click={onBtnClear}
             >
                 <Erase />
