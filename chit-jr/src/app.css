@@ -191,13 +191,13 @@ strong {
     font-weight: bold;
 
     &::before {
-        content: "**";
+        /* content: "**"; */
         font-weight: normal;
         opacity: 0.65;
     }
 
     &::after {
-        content: "**";
+        /* content: "**"; */
         font-weight: normal;
         opacity: 0.65;
     }
