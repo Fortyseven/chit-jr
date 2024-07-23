@@ -25,11 +25,12 @@
 
     function copyChatToClipboard() {
         const chatText = $chatTimeline
+            .slice($chatState.system_prompt_id === "general" ? 0 : 1)
             .map(({ role, content }) => {
                 if (role === "user") {
                     return "> " + content;
                 } else {
-                    return content.replace(/<[^>]*>?/gm, "");
+                    return content;
                 }
             })
             .join("\n\n---------------------------\n\n");
