@@ -4,6 +4,11 @@
     "homepage_url": "https://network47.org/",
     "author": "Fortyseven",
     "manifest_version": 2,
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "chitjr@network47.org"
+        }
+    },
     "permissions": [
         "activeTab",
         "contextMenus",
