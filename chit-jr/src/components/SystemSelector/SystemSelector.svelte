@@ -10,13 +10,26 @@
         incomingQuery,
         system_prompts,
     } from "../../stores/chatStatus";
-    import { responseInProgress, runQuery } from "../../api/api";
+    import {
+        cancelInference,
+        responseInProgress,
+        runQuery,
+    } from "../../api/api";
 
     import Recycle from "carbon-icons-svelte/lib/Recycle.svelte";
     import CloseLarge from "carbon-icons-svelte/lib/CloseLarge.svelte";
     import WarningAltFilled from "carbon-icons-svelte/lib/WarningAltFilled.svelte";
     import { refreshChatResponse } from "../../lib/chat_functions";
-    import { Copy, Erase, MachineLearning } from "carbon-icons-svelte";
+    import {
+        Copy,
+        Erase,
+        Gears,
+        MachineLearning,
+        StopSignFilled,
+    } from "carbon-icons-svelte";
+    import Settings from "./Settings/Settings.svelte";
+
+    let showSettings = true;
 
     function onBtnClear() {
         $incomingQuery = "";
@@ -56,6 +69,19 @@
         {/each}
     </select>
     <div class="flex pt-2 gap-1">
+        <div class="flex-shrink flex gap-2 place-items-center">
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
+            <!-- svelte-ignore a11y-no-static-element-interactions -->
+            <div
+                title="Settings"
+                class="hover:text-white"
+                on:click={() => {
+                    showSettings = !showSettings;
+                }}
+            >
+                <Gears />
+            </div>
+        </div>
         {#if $contextOverflow}
             <div
                 class="ctx-overflow flex-shrink flex gap-2 place-items-center"
@@ -88,6 +114,14 @@
                         Copy
                     </button>
                 {/if}
+            {:else}
+                <button
+                    id="btnAbort"
+                    on:click={cancelInference}
+                >
+                    <StopSignFilled />
+                    Abort
+                </button>
             {/if}
             <button
                 id="btnClear"
@@ -99,6 +133,9 @@
             </button>
         </div>
     </div>
+    {#if showSettings}
+        <Settings />
+    {/if}
 </div>
 
 <style>
@@ -112,6 +149,8 @@
         box-shadow: 0 1em 1em rgba(0, 0, 0, 0.5);
         border-bottom-left-radius: 1em;
         border-bottom-right-radius: 1em;
+
+        transition: all 0.5s linear;
     }
 
     #SystemSelector select,

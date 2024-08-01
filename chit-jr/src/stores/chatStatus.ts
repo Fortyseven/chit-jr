@@ -1,6 +1,17 @@
 import { derived, Writable, writable } from "svelte/store";
 
-const OLLAMA_MODEL = "gemma2:latest";
+// const OLLAMA_MODEL = "gemma2:latest";
+//const OLLAMA_MODEL = "mistral-nemo";
+// const OLLAMA_MODEL = "llama3:latest";
+
+const OLLAMA_MODEL = "llama3.1:latest";
+const OLLAMA_CTX = 64 * 1024;
+
+// const OLLAMA_MODEL = "gemma2:2b";
+// const OLLAMA_CTX = 8 * 1024;
+
+
+// const OLLAMA_CTX = 8192;
 
 /* --------------------------------------------------- */
 type ChatStateValues = {
@@ -18,7 +29,7 @@ export const chatState: Writable<ChatState> = writable({
     model_name: OLLAMA_MODEL,
     system_prompt_id: "general",
     values: {
-        num_ctx: 8192,
+        num_ctx: OLLAMA_CTX,
         temperature: 0.3,
     },
 });
@@ -44,5 +55,5 @@ export const contextTotal = derived(
 );
 
 export const contextOverflow = derived(contextTotal, ($contextTotal) => {
-    return $contextTotal >= 8192;
+    return $contextTotal >= OLLAMA_CTX;
 });

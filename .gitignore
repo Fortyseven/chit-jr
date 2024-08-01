@@ -6,3 +6,4 @@ firefox/sidebar
 *.zip
 *.xpi
 package-lock.json
+firefox/.amo-upload-uuid
