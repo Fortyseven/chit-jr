@@ -7,3 +7,4 @@ firefox/sidebar
 *.xpi
 package-lock.json
 firefox/.amo-upload-uuid
+.env
