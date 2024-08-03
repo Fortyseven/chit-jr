@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "carbon-icons-svelte": "^12.10.0",
     "sass": "^1.77.8"
   }
 }
