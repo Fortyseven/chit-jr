@@ -104,6 +104,14 @@ export function insertUserMessage(user_message) {
     });
 }
 
+function popPriorErrors()
+{
+    chatTimeline.update((timeline) => {
+        let new_timeline = timeline.filter((msg) => msg.role !== "error");
+        return new_timeline;
+    });
+}
+
 /* -------------------------------------------------------- */
 /* Returns null or the response from the server.            */
 export async function OL_chat(
@@ -111,9 +119,15 @@ export async function OL_chat(
     continue_chat = false,
     pasted_image = undefined
 ) {
-    if (get(chatState)?.model_name === null) {
-        throw new Error("No model selected");
+    popPriorErrors();
+
+    if (!get(chatState)?.model_name) {
+        return {
+            role: "error",
+            content: "No model selected.",
+        };
     }
+
 
     if (user_message) {
         insertUserMessage(user_message);
@@ -199,7 +213,11 @@ export async function OL_chat(
     } catch (err) {
         if (err?.name !== "AbortError") {
             console.error("OL_chat error: ", err);
-            throw Error("Error connecting to server: " + err.message);
+            return {
+                role: "error",
+                content: `Error connecting to server: ${err?.name}: ${err?.message}`,
+            };
+
         } else {
             return null;
         }

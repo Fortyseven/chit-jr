@@ -34,6 +34,8 @@
                     {:else}
                         {content}
                     {/if}
+                {:else if role === "error"}
+                    <div class="text-red-500 font-mono">{content}</div>
                 {:else}
                     <MarkdownBlock {content} />
                 {/if}
