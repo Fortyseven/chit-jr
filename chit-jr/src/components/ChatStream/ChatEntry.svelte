@@ -68,11 +68,16 @@
         id="ChatEntryButtons"
         class="flex gap-2 place-content-end pt-2"
     >
-        <button on:click={refreshChatResponse}>
-            <Reset /> Refresh
-        </button>
-
-        <button on:click={onBtnSendChatEntry}><SendAltFilled /> Submit </button>
+        {#if $chatTimeline.length > 0}
+            <button on:click={refreshChatResponse}>
+                <Reset /> Refresh
+            </button>
+        {/if}
+        {#if chatEntry}
+            <button on:click={onBtnSendChatEntry}
+                ><SendAltFilled /> Submit
+            </button>
+        {/if}
     </div>
 </div>
 
