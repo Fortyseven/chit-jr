@@ -1,4 +1,5 @@
 import { derived, Writable, writable } from "svelte/store";
+import { DEFAULT_TEMP, OLLAMA_ENDPOINT } from "../api/api";
 
 // const OLLAMA_MODEL = "gemma2:latest";
 //const OLLAMA_MODEL = "mistral-nemo";
@@ -26,11 +27,12 @@ type ChatState = {
 };
 
 export const chatState: Writable<ChatState> = writable({
+    api_endpoint: OLLAMA_ENDPOINT,
     model_name: OLLAMA_MODEL,
     system_prompt_id: "general",
     values: {
         num_ctx: OLLAMA_CTX,
-        temperature: 0.3,
+        temperature: DEFAULT_TEMP,
     },
 });
 
