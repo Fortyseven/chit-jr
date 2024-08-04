@@ -26,6 +26,8 @@ Yes, it's the all-new pocket-sized version of [Chit](https://github.com/Fortysev
 
 - If you are having trouble connecting, check if Ollama can be accessed from localhost. Set `OLLAMA_ORIGINS` appropriately. Setting it to `*` is not recommended for security reasons, but is fine for testing to make sure things work. This is probably because I'm calling `localhost:11434` instead of `127.0.0.1:11434` by default. I should probably change that. Why am I write this instead of doing it? Because I'm trying to stay on track with other stuff I need to do, and this is how I get distracted.
 
+- If you're seeing a "blocked loading mixed active content" error, it means non-HTTPS content is mixing with HTTPS content somewhere. This may happen if the Ollama endpoint is being served via HTTPS.
+
 ## Notes
 
 -   Currently built for Firefox, but other browsers are probable once things get stable.
