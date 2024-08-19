@@ -3,7 +3,7 @@ import SYSTEM_PROMPTS from "./sidebar/prompts/index.js";
 const MENU_ID = "chitjr-menu";
 
 onload = () => {
-    console.log("FUCK");
+    console.log("Loaded background.js");
     // message.windowId = currentWindow.id;
     // message.text = message.text.trim();
     // browser.runtime.sendMessage(message);
