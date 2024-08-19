@@ -12,6 +12,10 @@
     import ChatStream from "./components/ChatStream/ChatStream.svelte";
     import SystemSelector from "./components/SystemSelector/SystemSelector.svelte";
     import { insertUserMessage, runQuery } from "./api/api";
+    import {
+        restoreLocalStorageStores,
+        setLocalStorageSubscriptions,
+    } from "./lib/stores_persist";
 
     function switchSystemPrompt(system) {
         $chatState.system_prompt_id = system;
@@ -22,8 +26,11 @@
             async ({ action, text, windowId, system, s_prompts }) => {
                 // we do this once to import what system prompts are available to support
                 if (windowId && action === "initChitJr") {
-                    browser.windows.getCurrent().then((currentWindow) => {
+                    browser.windows.getCurrent().then(async (currentWindow) => {
                         if (windowId === currentWindow.id) {
+                            await restoreLocalStorageStores();
+                            await setLocalStorageSubscriptions();
+
                             console.log("initChitJr:", s_prompts);
                             $system_prompts = s_prompts;
                         }
@@ -46,7 +53,7 @@
                         }
                     });
                 }
-            }
+            },
         );
     }
 
