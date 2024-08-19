@@ -2,7 +2,8 @@ import { get, writable, Writable } from "svelte/store";
 
 import { chatState, chatTimeline, system_prompts } from "../stores/chatStatus";
 
-export const OLLAMA_ENDPOINT = "http://localhost:11434";
+export const OLLAMA_ENDPOINT = "http://127.0.0.1:11434";
+
 export const DEFAULT_TEMP = 0.3;
 
 const responseInProgress_AbortController = writable(null);
