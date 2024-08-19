@@ -15,9 +15,11 @@ const STORE_WHITELIST = [
 /***
  * Gets a persisted value from storage
  * @param key {string}
- * @returns {string | null}
+ * @returns {Promise<object> | null}
  */
+
 async function _getPersistStore(key) {
+    // @ts-ignore
     return await browser.storage.sync.get(key);
 }
 
@@ -28,6 +30,7 @@ async function _getPersistStore(key) {
  */
 
 async function _setPersistStore(key, value) {
+    // @ts-ignore
     await browser.storage.sync.set({ [key]: value });
 }
 
@@ -52,6 +55,7 @@ function _setLocalStoreSubscriptionsGroup(group) {
 }
 
 async function _syncLocalStorageStores_Group(group) {
+    // @ts-ignore
     const storage_values = await browser.storage.sync.get();
 
     Object.keys(group)
